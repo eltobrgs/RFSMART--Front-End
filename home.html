@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RF SMART Dashboard</title>
+    <link rel="stylesheet" href="css/home.css">
+    <script src="js/sidebar.js" defer></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+            <div class="logo_name">RFSmart <img src="img/logo.svg" alt=""></div>
+            <i class='bx bx-menu' id="btn"></i>
+        </div>
+        <ul class="nav-list">
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="Search...">
+                <span class="tooltip">Search</span>
+            </li>
+            <li>
+                <a href="">
+                    <i class='bx bx-grid-alt'></i>
+                    <span class="links_name">Dashboard</span>
+                </a>
+                <span class="tooltip">Dashboard</span>
+            </li>
+            <li>
+                <a href="">
+                    <i class='bx bx-user'></i>
+                    <span class="links_name">User</span>
+                </a>
+                <span class="tooltip">User</span>
+            </li>
+            <li>
+                <a href="">
+                    <i class='bx bx-chat'></i>
+                    <span class="links_name">Messages</span>
+                </a>
+                <span class="tooltip">Messages</span>
+            </li>
+            <li>
+                <a href="">
+                    <i class='bx bx-pie-chart-alt-2'></i>
+                    <span class="links_name">Analytics</span>
+                </a>
+                <span class="tooltip">Analytics</span>
+            </li>
+            <li>
+                <a href="">
+                    <i class='bx bx-folder'></i>
+                    <span class="links_name">Files</span>
+                </a>
+                <span class="tooltip">Files</span>
+            </li>
+            <li>
+                <a href="">
+                    <i class='bx bx-cart-alt'></i>
+                    <span class="links_name">Order</span>
+                </a>
+                <span class="tooltip">Order</span>
+            </li>
+            <li>
+                <a href="">
+                    <i class='bx bx-heart'></i>
+                    <span class="links_name">Saved</span>
+                </a>
+                <span class="tooltip">Saved</span>
+            </li>
+            <li>
+                <a href="">
+                    <i class='bx bx-cog'></i>
+                    <span class="links_name">Settings</span>
+                </a>
+                <span class="tooltip">Settings</span>
+            </li>
+            <li class="profile">
+                <div class="profile-details">
+                    <div class="name_job">
+                        <div class="name">User</div>
+                        <div class="job">Vendedor</div>
+                    </div>
+                </div>
+                <i class='bx bx-log-out' id="log_out" onclick="exit()"></i>
+            </li>
+        </ul>
+    </div>
+    <section class="home-section">
+    <div class="dashboard">
+        <div class="header">
+            <h1>Olá, user <span>💚</span></h1>
+            <div class="progress">
+                <span>Starter</span>
+                <span>Próxima conquista: R$ 10k</span>
+            </div>
+        </div>
+
+        <div class="balance-section">
+            <div class="balance-card">
+                <h3>Saldo disponível</h3>
+                <p>R$ 0,00</p>
+                <a href="#">Sacar</a>
+            </div>
+            <div class="balance-card">
+                <h3>Lançamentos futuros</h3>
+                <p>R$ 0,00</p>
+                <a href="#">Antecipar</a>
+            </div>
+        </div>
+        <div class="charts-section">
+            <div class="chart-container">
+              <h3>Gráfico de Vendas Mensais</h3>
+              <canvas id="salesChart"></canvas>
+            </div>
+            <div class="chart-container">
+              <h3>Receitas por Categoria</h3>
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+
+        <div class="sales-section">
+            <h2>Minhas vendas</h2>
+            <div class="filters">
+                <button class="active">Últimos 7 dias</button>
+                <button>Últimos 30 dias</button>
+                <button>Últimos 90 dias</button>
+            </div>
+            <div class="sales-overview">
+                <div class="sales-card">
+                    <h3>Total em comissões</h3>
+                    <p>R$ 0,00</p>
+                </div>
+                <div class="sales-card">
+                    <h3>Novas vendas</h3>
+                    <p>R$ 0,00</p>
+                </div>
+                <div class="sales-card">
+                    <h3>Renovações</h3>
+                    <p>R$ 0,00</p>
+                </div>
+                <div class="sales-card">
+                    <h3>Vendas por cartão</h3>
+                    <p>0%</p>
+                </div>
+                <div class="sales-card">
+                    <h3>Vendas por Pix</h3>
+                    <p>0%</p>
+                </div>
+                <div class="sales-card">
+                    <h3>Reembolsos</h3>
+                    <p>0%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const userNameElement = document.querySelector(".header h1");
+        const UserNameElementSidebar= document.querySelector(".name");
+        const logOutButton = document.getElementById("log_out");
+
+        // Substitua pela URL correta da sua API
+        const API_URL = "http://localhost:3000/me";
+
+        const token = localStorage.getItem("token");
+
+        if (token) {
+            fetch(API_URL, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erro ao buscar os dados do usuário");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    userNameElement.innerHTML = `Olá, ${data.name} <span>💚</span>`;
+                    UserNameElementSidebar.innerHTML = `${data.name}`;
+                })
+                .catch(error => {
+                    console.error("Erro ao carregar dados do usuário:", error);
+                    userNameElement.innerHTML = "Olá, Usuário <span>💚</span>";
+                });
+        } else {
+            alert("Você precisa estar logado!");
+            window.location.href = "/login.html";
+        }
+    });
+
+    function exit () {
+        localStorage.removeItem("token");
+        window.location.href = "/login.html";
+    }
+
+  // Configurações do gráfico de vendas mensais
+  const salesCtx = document.getElementById('salesChart').getContext('2d');
+  const salesChart = new Chart(salesCtx, {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+      datasets: [{
+        label: 'Vendas (R$)',
+        data: [1200, 1900, 3000, 5000, 2500, 4000, 3200, 4500, 5000, 5500, 6000, 7000],
+        borderColor: '#007bff',
+        backgroundColor: 'rgba(0, 123, 255, 0.2)',
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true
+        }
+      }
+    }
+  });
+
+  // Configurações do gráfico de receitas por categoria
+  const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+  const revenueChart = new Chart(revenueCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Eletrônicos', 'Roupas', 'Alimentos', 'Outros'],
+      datasets: [{
+        label: 'Receitas',
+        data: [3000, 2000, 1500, 500],
+        backgroundColor: ['#007bff', '#ffc107', '#28a745', '#17a2b8']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top'
+        }
+      }
+    }
+  });
+
+
+</script>
+
+
+</body>
+
+</html>
