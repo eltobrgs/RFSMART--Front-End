@@ -1,0 +1,129 @@
+body {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f9fa;
+  color: #4a4a4a;
+}
+
+.content {
+  padding: 20px;
+}
+
+.content h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.content .search-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.content .search-bar input,
+.content .search-bar select {
+  padding: 12px;
+  border: 1px solid #e5e5e5;
+  border-radius: 5px;
+  margin-right: 10px;
+  background-color: #ffffff;
+  transition: border-color 0.3s;
+}
+
+.content .search-bar input:focus,
+.content .search-bar select:focus {
+  border-color: #00bfa6;
+  outline: none;
+}
+
+.content .search-bar button {
+  background-color: #00bfa6;
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.content .search-bar button:hover {
+  background-color: #009b8a;
+}
+
+.content .product-list {
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.content .product-list .product-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 0;
+  border-bottom: 1px solid #e5e5e5;
+  transition: background-color 0.3s;
+}
+
+.content .product-list .product-item:hover {
+  background-color: #f9f9f9;
+}
+
+.content .product-list .product-item:last-child {
+  border-bottom: none;
+}
+
+.content .product-list .product-item img {
+  width: 50px;
+  height: 50px;
+  background-color: #e5e5e5;
+  border-radius: 5px;
+  margin-right: 20px;
+}
+
+.content .product-list .product-item .status {
+  background-color: #ff6b6b;
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.content .pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.content .pagination select {
+  padding: 8px;
+  border: 1px solid #e5e5e5;
+  border-radius: 5px;
+  margin: 0 10px;
+  transition: border-color 0.3s;
+}
+
+.content .pagination select:focus {
+  border-color: #00bfa6;
+  outline: none;
+}
+
+.content .pagination button {
+  background-color: #00bfa6;
+  color: #ffffff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.content .pagination button:hover {
+  background-color: #009b8a;
+}

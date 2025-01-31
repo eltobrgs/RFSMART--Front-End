@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RF SMART Dashboard</title>
+    <link rel="stylesheet" href="css/home.css">
+    <script src="js/sidebar.js" defer></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/product.css">
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo-details">
+            <div class="logo_name">RFSmart <img src="img/logo.svg" alt=""></div>
+            <i class='bx bx-menu' id="btn"></i>
+        </div>
+        <ul class="nav-list">
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="Search...">
+                <span class="tooltip">Search</span>
+            </li>
+            <li>
+                <a href="">
+                    <i class='bx bx-grid-alt'></i>
+                    <span class="links_name">Dashboard</span>
+                </a>
+                <span class="tooltip">Dashboard</span>
+            </li>
+            <li>
+                <a href="">
+                    <i class='bx bx-user'></i>
+                    <span class="links_name">User</span>
+                </a>
+                <span class="tooltip">User</span>
+            </li>
+            <li>
+                <a href="products.html">
+                    <i class='bx bx-box'></i>
+                    <span class="links_name">Produtos</span>
+                </a>
+                <span class="tooltip">Produtos</span>
+            </li>
+            <li>
+                <a href="">
+                    <i class='bx bx-pie-chart-alt-2'></i>
+                    <span class="links_name">Analytics</span>
+                </a>
+                <span class="tooltip">Analytics</span>
+            </li>
+            <li>
+                <a href="">
+                    <i class='bx bx-folder'></i>
+                    <span class="links_name">Files</span>
+                </a>
+                <span class="tooltip">Files</span>
+            </li>
+            <li>
+                <a href="">
+                    <i class='bx bx-cart-alt'></i>
+                    <span class="links_name">Order</span>
+                </a>
+                <span class="tooltip">Order</span>
+            </li>
+            <li>
+                <a href="">
+                    <i class='bx bx-heart'></i>
+                    <span class="links_name">Saved</span>
+                </a>
+                <span class="tooltip">Saved</span>
+            </li>
+            <li>
+                <a href="">
+                    <i class='bx bx-cog'></i>
+                    <span class="links_name">Settings</span>
+                </a>
+                <span class="tooltip">Settings</span>
+            </li>
+            <li class="profile">
+                <div class="profile-details">
+                    <div class="name_job">
+                        <div class="name">User</div>
+                        <div class="job">Vendedor</div>
+                    </div>
+                </div>
+                <i class='bx bx-log-out' id="log_out" onclick="exit()"></i>
+            </li>
+        </ul>
+    </div>
+    <section class="home-section">
+        <div class="dashboard">
+            <div class="header">
+                <h1>Olá, user <span>💚</span></h1>
+                <div class="progress">
+                    <span>Starter</span>
+                    <span>Próxima conquista: R$ 10k</span>
+                </div>
+            </div>
+            <hr>
+            <div class="content">
+                <h1>
+                    Produtos
+                </h1>
+                <div class="search-bar">
+                    <input placeholder="Buscar" type="text" />
+                    <button>
+                        <i class="fas fa-search">
+                        </i>
+                    </button>
+                    <select>
+                        <option>
+                            Todos
+                        </option>
+                    </select>
+                    <button onclick="window.location.href='cadastrodeprodutos.html'">
+                        Novo produto
+                        <i class="fas fa-plus">
+                        </i>
+                    </button>
+                </div>
+                <div class="product-list" id="product-list">
+                    
+                </div>
+                <div class="pagination">
+                    <span>
+                        Exibindo
+                    </span>
+                    <select>
+                        <option>
+                            5
+                        </option>
+                    </select>
+                    <span>
+                        de 1 resultados
+                    </span>
+                    <button>
+                        <i class="fas fa-chevron-left">
+                        </i>
+                    </button>
+                    <button>
+                        <i class="fas fa-chevron-right">
+                        </i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const userNameElement = document.querySelector(".header h1");
+            const UserNameElementSidebar = document.querySelector(".name");
+            const logOutButton = document.getElementById("log_out");
+
+            // Substitua pela URL correta da sua API
+            const API_URL = "https://rfsmart-back-end.onrender.com/me";
+
+            const token = localStorage.getItem("token");
+
+            if (token) {
+                fetch(API_URL, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Erro ao buscar os dados do usuário");
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        userNameElement.innerHTML = `Olá, ${data.name} <span>💚</span>`;
+                        UserNameElementSidebar.innerHTML = `${data.name}`;
+                    })
+                    .catch(error => {
+                        console.error("Erro ao carregar dados do usuário:", error);
+                        userNameElement.innerHTML = "Olá, Usuário <span>💚</span>";
+                    });
+            } else {
+                alert("Você precisa estar logado!");
+                window.location.href = "/login.html";
+            }
+        });
+
+        function exit() {
+            localStorage.removeItem("token");
+            window.location.href = "/login.html";
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const productListElement = document.getElementById('product-list');
+            const token = localStorage.getItem("token");
+            const API_URL = "https://rfsmart-back-end.onrender.com/produtos";
+
+            fetch(API_URL, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Erro ao buscar produtos");
+                }
+                return response.json();
+            })
+            .then(products => {
+                products.forEach(product => {
+                    const productItem = document.createElement('div');
+                    productItem.className = 'product-item';
+                    productItem.innerHTML = `
+                        <div>
+                            <span>${product.name}</span>
+                        </div>
+                        <div class="status">
+                            Ativo
+                        </div>
+                    `;
+                    productListElement.appendChild(productItem);
+                });
+            })
+            .catch(error => {
+                console.error("Erro:", error);
+                productListElement.innerHTML = "Erro ao carregar produtos.";
+            });
+
+        });
+    </script>
+
+
+</body>
+
+</html>
