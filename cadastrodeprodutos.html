@@ -178,62 +178,68 @@
         </ul>
     </div>
     <section class="home-section">
-    <div class="dashboard">
-        <div class="header">
-            <h1>Olá, user <span>💚</span></h1>
-            <div class="progress">
-                <span>Starter</span>
-                <span>Próxima conquista: R$ 10k</span>
+        <div class="dashboard">
+            <div class="new-productcontainer">
+                <div class="header">
+                    <h1>Olá, user <span>💚</span></h1>
+                    <div class="progress">
+                        <span>Starter</span>
+                        <span>Próxima conquista: R$ 10k</span>
+                    </div>
+                </div>
+                <hr style="margin-bottom: 5%;">
+                <h1>Vamos criar seu produto na RFSmart</h1>
+                <p>Conte sobre seu produto. Estas informações estarão visíveis para todos.</p>
+                <div class="form-group">
+                    <label for="product-name">Nome do seu produto</label>
+                    <input type="text" id="product-name" placeholder="Ex: Iniciantes no Marketing Digital" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Categoria</label>
+                    <select id="category" required>
+                        <option value="">Selecione um nicho</option>
+                        <option>Marketing Digital</option>
+                        <option>Finanças</option>
+                        <option>Desenvolvimento Pessoal</option>
+                        <option>Relacionamentos</option>
+                        <option>Produtividade</option>
+                        <option>Outros</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="product-description">Descrição</label>
+                    <textarea id="product-description" placeholder="Conte mais sobre seu produto" rows="10" style="width: 100%;" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="product-image">Imagem do Produto</label>
+                    <input type="file" id="product-image" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label for="product-video">Vídeo do Produto</label>
+                    <input type="file" id="product-video" accept="video/*">
+                </div>
+                <div class="form-group">
+                    <label for="product-pdf">Arquivo PDF</label>
+                    <input type="file" id="product-pdf" accept="application/pdf">
+                </div>
+                <button class="btn" id="submit-product">CONTINUAR</button>
             </div>
         </div>
+    </section>
 
-        <div class="new-productcontainer  ">
-            <h1>Vamos criar seu produto na RFSmart</h1>
-            <p>Conte sobre seu produto. Estas informações estarão visíveis para todos.</p>
-            <div class="form-group">
-                <label for="product-name">Nome do seu produto</label>
-                <input type="text" id="product-name" placeholder="Ex: Iniciantes no Marketing Digital">
-            </div>
-            <div class="form-group">
-                <label for="category">Categoria</label>
-                <select id="category">
-                    <option>Selecione um nicho</option>
-                    <option>Marketing Digital</option>
-                    <option>Finanças</option>
-                    <option>Desenvolvimento Pessoal</option>
-                    <option>Relacionamentos</option>
-                    <option>Produtividade</option>
-                    <option>Outros</option>
-    
-                </select>
-            </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const userNameElement = document.querySelector(".header h1");
+            const UserNameElementSidebar = document.querySelector(".name");
+            const token = localStorage.getItem("token");
 
-            <div class="form-group">
-                <label for="product-description">Descrição</label>
-                <textarea id="product-description" placeholder="Conte mais sobre seu produto" style="height: 200px; width: 95%;"></textarea>
-            </div>
-            <button class="btn" id="submit-product">CONTINUAR</button>
-        </div>
-       
+            if (!token) {
+                alert("Você precisa estar logado!");
+                window.location.href = "/login.html";
+                return;
+            }
 
-       
-    </div>
-</section>
-
-<script>
-
-    document.addEventListener("DOMContentLoaded", () => {
-        const userNameElement = document.querySelector(".header h1");
-        const UserNameElementSidebar= document.querySelector(".name");
-        const logOutButton = document.getElementById("log_out");
-
-        // Substitua pela URL correta da sua API
-        const API_URL = "https://rfsmart-back-end.onrender.com/me";
-
-        const token = localStorage.getItem("token");
-
-        if (token) {
-            fetch(API_URL, {
+            fetch("https://rfsmart-back-end.onrender.com/me", {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -241,9 +247,7 @@
                 }
             })
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Erro ao buscar os dados do usuário");
-                    }
+                    if (!response.ok) throw new Error("Erro ao buscar dados do usuário");
                     return response.json();
                 })
                 .then(data => {
@@ -251,67 +255,69 @@
                     UserNameElementSidebar.innerHTML = `${data.name}`;
                 })
                 .catch(error => {
-                    console.error("Erro ao carregar dados do usuário:", error);
-                    userNameElement.innerHTML = "Olá, Usuário <span>💚</span>";
+                    console.error("Erro:", error);
+                    alert("Erro ao carregar dados do usuário.");
                 });
-        } else {
-            alert("Você precisa estar logado!");
+        });
+
+        function exit() {
+            localStorage.removeItem("token");
             window.location.href = "/login.html";
         }
-    });
 
-    function exit () {
-        localStorage.removeItem("token");
-        window.location.href = "/login.html";
-    }
-    
-    document.getElementById('submit-product').addEventListener('click', () => {
-        const productName = document.getElementById('product-name').value;
-        const category = document.getElementById('category').value;
-        const description = document.getElementById('product-description').value;
+        function saveFileToLocalStorage(inputElement, productId, fileType) {
+            const file = inputElement.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    localStorage.setItem(`${productId}_${fileType}`, e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
 
-        const token = localStorage.getItem("token");
-        const API_URL = "https://rfsmart-back-end.onrender.com/produtos";
+        document.getElementById('submit-product').addEventListener('click', () => {
+            const productName = document.getElementById('product-name').value;
+            const category = document.getElementById('category').value;
+            const description = document.getElementById('product-description').value;
 
-        fetch(API_URL, {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                name: productName,
-                category: category,
-                description: description
+            if (!productName || !category || !description) {
+                alert("Preencha todos os campos obrigatórios!");
+                return;
+            }
+
+            const token = localStorage.getItem("token");
+
+            fetch("https://rfsmart-back-end.onrender.com/produtos", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: productName,
+                    category: category,
+                    description: description,
+                })
             })
-        })
-        .then(response => {
-            console.log("Response status:", response.status);
-            return response.json().then(body => {
-                console.log("Response body:", body);
-                if (!response.ok) {
-                    throw new Error("Erro ao cadastrar produto");
-                }
-                return body;
-            });
-            return response.json();
-        })
-        .then(data => {
-            alert(data.message);
-            window.location.href = "/products.html";
-        })
-        .catch(error => {
-            console.error("Erro:", error);
-            alert("Erro ao cadastrar produto");
+                .then(response => response.json())
+                .then(data => {
+                    const productId = data.product.id;
+
+                    saveFileToLocalStorage(document.getElementById('product-image'), productId, 'image');
+                    saveFileToLocalStorage(document.getElementById('product-video'), productId, 'video');
+                    saveFileToLocalStorage(document.getElementById('product-pdf'), productId, 'pdf');
+
+                    alert("Produto cadastrado com sucesso!");
+                    window.location.href = "/products.html";
+                })
+                .catch(error => {
+                    console.error("Erro:", error);
+                    alert("Erro ao cadastrar produto.");
+                });
         });
-    });
-
-  
-
-
-</script>
-
-
+    </script>
 </body>
 
 </html>
+
