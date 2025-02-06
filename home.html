@@ -91,168 +91,160 @@
         </ul>
     </div>
     <section class="home-section">
-    <div class="dashboard">
-        <div class="header">
-            <h1>Olá, user <span>💚</span></h1>
-            <div class="progress">
-                <span>Starter</span>
-                <span>Próxima conquista: R$ 10k</span>
+        <div class="dashboard">
+            <div class="header">
+                <h1>Olá, user <span>💚</span></h1>
+                <div class="progress">
+                    <span>Starter</span>
+                    <span>Próxima conquista: R$ 10k</span>
+                </div>
+            </div>
+
+            <div class="balance-section">
+                <div class="balance-card">
+                    <h3>Saldo disponível</h3>
+                    <p>R$ 0,00</p>
+                    <a href="#">Sacar</a>
+                </div>
+                <div class="balance-card">
+                    <h3>Lançamentos futuros</h3>
+                    <p>R$ 0,00</p>
+                    <a href="#">Antecipar</a>
+                </div>
+            </div>
+            <div class="charts-section">
+                <div class="chart-container">
+                    <h3>Gráfico de Vendas Mensais</h3>
+                    <canvas id="salesChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Receitas por Categoria</h3>
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+
+            <div class="sales-section">
+                <h2>Minhas vendas</h2>
+                <div class="filters">
+                    <button class="active">Últimos 7 dias</button>
+                    <button>Últimos 30 dias</button>
+                    <button>Últimos 90 dias</button>
+                </div>
+                <div class="sales-overview">
+                    <div class="sales-card">
+                        <h3>Total em comissões</h3>
+                        <p>R$ 0,00</p>
+                    </div>
+                    <div class="sales-card">
+                        <h3>Novas vendas</h3>
+                        <p>R$ 0,00</p>
+                    </div>
+                    <div class="sales-card">
+                        <h3>Renovações</h3>
+                        <p>R$ 0,00</p>
+                    </div>
+                    <div class="sales-card">
+                        <h3>Vendas por cartão</h3>
+                        <p>0%</p>
+                    </div>
+                    <div class="sales-card">
+                        <h3>Vendas por Pix</h3>
+                        <p>0%</p>
+                    </div>
+                    <div class="sales-card">
+                        <h3>Reembolsos</h3>
+                        <p>0%</p>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="balance-section">
-            <div class="balance-card">
-                <h3>Saldo disponível</h3>
-                <p>R$ 0,00</p>
-                <a href="#">Sacar</a>
-            </div>
-            <div class="balance-card">
-                <h3>Lançamentos futuros</h3>
-                <p>R$ 0,00</p>
-                <a href="#">Antecipar</a>
-            </div>
-        </div>
-        <div class="charts-section">
-            <div class="chart-container">
-              <h3>Gráfico de Vendas Mensais</h3>
-              <canvas id="salesChart"></canvas>
-            </div>
-            <div class="chart-container">
-              <h3>Receitas por Categoria</h3>
-              <canvas id="revenueChart"></canvas>
-            </div>
-          </div>
-
-        <div class="sales-section">
-            <h2>Minhas vendas</h2>
-            <div class="filters">
-                <button class="active">Últimos 7 dias</button>
-                <button>Últimos 30 dias</button>
-                <button>Últimos 90 dias</button>
-            </div>
-            <div class="sales-overview">
-                <div class="sales-card">
-                    <h3>Total em comissões</h3>
-                    <p>R$ 0,00</p>
-                </div>
-                <div class="sales-card">
-                    <h3>Novas vendas</h3>
-                    <p>R$ 0,00</p>
-                </div>
-                <div class="sales-card">
-                    <h3>Renovações</h3>
-                    <p>R$ 0,00</p>
-                </div>
-                <div class="sales-card">
-                    <h3>Vendas por cartão</h3>
-                    <p>0%</p>
-                </div>
-                <div class="sales-card">
-                    <h3>Vendas por Pix</h3>
-                    <p>0%</p>
-                </div>
-                <div class="sales-card">
-                    <h3>Reembolsos</h3>
-                    <p>0%</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<script>
-
-    document.addEventListener("DOMContentLoaded", () => {
-        const userNameElement = document.querySelector(".header h1");
-        const UserNameElementSidebar= document.querySelector(".name");
-        const logOutButton = document.getElementById("log_out");
-
-        // Substitua pela URL correta da sua API
-        const API_URL = "https://rfsmart-back-end.onrender.com/me";
-
-        const token = localStorage.getItem("token");
-
-        if (token) {
-            fetch(API_URL, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                }
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Erro ao buscar os dados do usuário");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    userNameElement.innerHTML = `Olá, ${data.name} <span>💚</span>`;
-                    UserNameElementSidebar.innerHTML = `${data.name}`;
-                })
-                .catch(error => {
-                    console.error("Erro ao carregar dados do usuário:", error);
-                    userNameElement.innerHTML = "Olá, Usuário <span>💚</span>";
-                });
-        } else {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const userNameElement = document.querySelector(".header h1");
+          const UserNameElementSidebar = document.querySelector(".name");
+          const token = localStorage.getItem("token");
+    
+          if (!token) {
             alert("Você precisa estar logado!");
-            window.location.href = "/login.html";
+            window.location.href = "/loginvendedor.html";
+            return;
+          }
+    
+          // Busca os dados do usuário e verifica o role
+          fetch("http://localhost:3000/me", {
+            method: "GET",
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json"
+            }
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error("Erro ao buscar os dados do usuário");
+            }
+            return response.json();
+          })
+          .then(data => {
+            // Se o usuário não for vendedor, redireciona para a listagem de cursos
+            if (data.role !== "VENDEDOR") {
+              window.location.href = "/cursos.html";
+              return;
+            }
+            userNameElement.innerHTML = `Olá, ${data.name} <span>💚</span>`;
+            UserNameElementSidebar.innerHTML = `${data.name}`;
+          })
+          .catch(error => {
+            console.error("Erro ao carregar dados do usuário:", error);
+            userNameElement.innerHTML = "Olá, Usuário <span>💚</span>";
+          });
+        });
+    
+        function exit() {
+          localStorage.removeItem("token");
+          window.location.href = "/index.html";
         }
-    });
-
-    function exit () {
-        localStorage.removeItem("token");
-        window.location.href = "/login.html";
-    }
-
-  // Configurações do gráfico de vendas mensais
-  const salesCtx = document.getElementById('salesChart').getContext('2d');
-  const salesChart = new Chart(salesCtx, {
-    type: 'line',
-    data: {
-      labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-      datasets: [{
-        label: 'Vendas (R$)',
-        data: [1200, 1900, 3000, 5000, 2500, 4000, 3200, 4500, 5000, 5500, 6000, 7000],
-        borderColor: '#007bff',
-        backgroundColor: 'rgba(0, 123, 255, 0.2)',
-        fill: true
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          display: true
-        }
-      }
-    }
-  });
-
-  // Configurações do gráfico de receitas por categoria
-  const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-  const revenueChart = new Chart(revenueCtx, {
-    type: 'doughnut',
-    data: {
-      labels: ['Eletrônicos', 'Roupas', 'Alimentos', 'Outros'],
-      datasets: [{
-        label: 'Receitas',
-        data: [3000, 2000, 1500, 500],
-        backgroundColor: ['#007bff', '#ffc107', '#28a745', '#17a2b8']
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'top'
-        }
-      }
-    }
-  });
-
-
-</script>
+    
+        // Configurações dos gráficos (exemplo com Chart.js)
+        const salesCtx = document.getElementById('salesChart').getContext('2d');
+        const salesChart = new Chart(salesCtx, {
+          type: 'line',
+          data: {
+            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            datasets: [{
+              label: 'Vendas (R$)',
+              data: [1200, 1900, 3000, 5000, 2500, 4000, 3200, 4500, 5000, 5500, 6000, 7000],
+              borderColor: '#007bff',
+              backgroundColor: 'rgba(0, 123, 255, 0.2)',
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: true }
+            }
+          }
+        });
+    
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(revenueCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Eletrônicos', 'Roupas', 'Alimentos', 'Outros'],
+            datasets: [{
+              label: 'Receitas',
+              data: [3000, 2000, 1500, 500],
+              backgroundColor: ['#007bff', '#ffc107', '#28a745', '#17a2b8']
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { position: 'top' } }
+          }
+        });
+      </script>
 
 
 </body>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
@@ -225,7 +225,7 @@
                                 <path fill="none" d="M0 0h48v48H0z" />
                             </svg>
                         </button>
-                        <button class="social-btn facebook-btn">Entrar com Facebook <!-- Facebook SVG -->
+                        <button class="social-btn facebook-btn">Entrar com Facebook 
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
                                 <path fill="#3b5998"
                                     d="M22.675 0h-21.35C.595 0 0 .595 0 1.325v21.351C0 23.405.595 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.894-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.918.001c-1.504 0-1.794.715-1.794 1.763v2.31h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.325-.595 1.325-1.324V1.325C24 .595 23.405 0 22.675 0z" />
@@ -253,7 +253,7 @@
                                 <path fill="none" d="M0 0h48v48H0z" />
                             </svg>
                         </button>
-                        <button class="social-btn facebook-btn">Cadastrar com Facebook <!-- Facebook SVG -->
+                        <button class="social-btn facebook-btn">Cadastrar com Facebook 
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
                                 <path fill="#3b5998"
                                     d="M22.675 0h-21.35C.595 0 0 .595 0 1.325v21.351C0 23.405.595 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.894-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.918.001c-1.504 0-1.794.715-1.794 1.763v2.31h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.325-.595 1.325-1.324V1.325C24 .595 23.405 0 22.675 0z" />
@@ -265,7 +265,7 @@
         </div>
     </div>
     <script>
-        const API_URL = 'https://rfsmart-back-end.onrender.com';
+        const API_URL = 'http://localhost:3000';
 
         function showLogin() {
             document.getElementById('formContainer').style.transform = 'translateX(0)';
@@ -337,4 +337,229 @@
 
 </html>
 
+ -->
 
+
+
+ <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RF SMART - Cadastro de Vendedor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { display: flex; justify-content: center; align-items: center; height: 100vh; background: whitesmoke; color: black; }
+    .container { display: flex; height: 100vh; width: 100%; }
+    .left {
+      background-image: url('/img/vendedor.png');
+      background-repeat: no-repeat;
+      background-position: center bottom;
+      flex: 1;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .left h1 { font-size: 2.8rem; line-height: 1.2; margin-bottom: 1rem; }
+    .left .integration-icons img { width: 40px; height: 40px; margin-right: 10px; }
+    .right { flex: 1; display: flex; justify-content: center; align-items: center; }
+    .containerform {
+      width: 435px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      padding: 20px;
+      text-align: center;
+    }
+    .toggle-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .toggle-buttons button {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      cursor: pointer;
+      background: none;
+      font-weight: bold;
+      font-size: 16px;
+      transition: color 0.3s ease-in-out;
+      width: 50%;
+    }
+    .toggle-buttons button.active {
+      color: #db981b;
+      border-bottom: 3px solid #db981b;
+    }
+    .form-container {
+      display: flex;
+      width: 800px;
+      transition: transform 0.3s ease-in-out;
+    }
+    .form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 0 20px;
+      justify-content: center;
+      align-items: center;
+    }
+    h2 { margin-bottom: 10px; color: #333; }
+    input {
+      width: calc(100% - 10px);
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      margin: 0 auto;
+    }
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: #db981b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+    .submit-btn:hover { background: #db981b; }
+    .form-footer a {
+      color: #db981b;
+      text-decoration: none;
+      font-size: 14px;
+      display: block;
+      margin-top: 10px;
+    }
+    .google-btn, .facebook-btn {
+      width: 100%;
+      padding: 14px;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+      margin-top: 5px;
+    }
+    .google-btn {
+      background: linear-gradient(45deg, #34A853, #4285F4, #FBBC05, #EA4335);
+    }
+    .facebook-btn {
+      background: linear-gradient(45deg, #3b5998, #ffffff);
+    }
+    .facebook-btn:hover { background: #2d4373; }
+    @media (max-width: 768px) { .left { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left">
+      <h1>A melhor plataforma<br> para você vender seu<br> produto digital.</h1>
+      <p>A única que integra com:</p>
+      <div class="integration-icons">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram">
+        <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WhatsApp">
+      </div>
+    </div>
+    <div class="right">
+      <div class="containerform">
+        <img src="img/favicon.png" alt="" style="width: 60px; height: 60px;">
+        <div class="toggle-buttons">
+          <button id="loginBtn" class="active" onclick="showLogin()">Entrar</button>
+          <button id="registerBtn" onclick="showRegister()">Cadastrar</button>
+        </div>
+        <div class="form-container" id="formContainer">
+          <!-- Login -->
+          <div class="form" id="loginForm">
+            <h2>Acesse sua conta</h2>
+            <input type="email" id="loginEmail" placeholder="E-mail">
+            <input type="password" id="loginPassword" placeholder="Senha">
+            <button class="submit-btn" onclick="handleLogin()">Entrar</button>
+            <button class="google-btn">Entrar com Google</button>
+            <button class="facebook-btn">Entrar com Facebook</button>
+          </div>
+          <!-- Cadastro de Vendedor -->
+          <div class="form" id="registerForm">
+            <h2>Crie sua conta de Vendedor</h2>
+            <input type="text" id="registerName" placeholder="Nome completo">
+            <input type="email" id="registerEmail" placeholder="E-mail">
+            <input type="password" id="registerPassword" placeholder="Senha">
+            <button class="submit-btn" onclick="handleRegister()">Cadastrar</button>
+            <button class="google-btn">Cadastrar com Google</button>
+            <button class="facebook-btn">Cadastrar com Facebook</button>
+          </div>
+        </div>
+        <p id="message" style="color:red; font-size:14px; margin-top: 10px;"></p>
+      </div>
+    </div>
+  </div>
+  <script>
+    const API_URL = 'http://localhost:3000';
+    function showLogin() {
+      document.getElementById('formContainer').style.transform = 'translateX(0)';
+      document.getElementById('loginBtn').classList.add('active');
+      document.getElementById('registerBtn').classList.remove('active');
+    }
+    function showRegister() {
+      document.getElementById('formContainer').style.transform = 'translateX(-400px)';
+      document.getElementById('registerBtn').classList.add('active');
+      document.getElementById('loginBtn').classList.remove('active');
+    }
+    async function handleLogin() {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      try {
+        const response = await fetch(`${API_URL}/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          localStorage.setItem('token', data.token);
+          alert('Login bem-sucedido!');
+          window.location.href = '/home.html';
+        } else {
+          document.getElementById('message').textContent = data.error || 'Erro ao realizar login';
+        }
+      } catch (error) {
+        document.getElementById('message').textContent = 'Erro de conexão com o servidor.';
+      }
+    }
+    async function handleRegister() {
+      const name = document.getElementById('registerName').value;
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+      try {
+        const response = await fetch(`${API_URL}/cadastro`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          // Enviando o role como VENDEDOR para cadastro de vendedor
+          body: JSON.stringify({ name, email, password, role: 'VENDEDOR' }),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          alert('Cadastro realizado com sucesso!');
+          localStorage.setItem('token', data.token);
+          window.location.href = '/home.html';
+          showLogin();
+        } else {
+          document.getElementById('message').textContent = data.error || 'Erro ao realizar cadastro';
+          alert('Erro ao realizar cadastro');
+        }
+      } catch (error) {
+        document.getElementById('message').textContent = 'Erro de conexão com o servidor.';
+      }
+    }
+  </script>
+</body>
+</html>

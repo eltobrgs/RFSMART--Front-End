@@ -335,7 +335,7 @@
         function loadProducts() {
             const productListElement = document.getElementById('product-list');
             const token = localStorage.getItem("token");
-            const API_URL = "https://rfsmart-back-end.onrender.com/produtos";
+            const API_URL = "http://localhost:3000/produtos";
     
             fetch(API_URL, {
                 method: "GET",
@@ -398,7 +398,7 @@
             const UserNameElementSidebar = document.querySelector(".name");
             const logOutButton = document.getElementById("log_out");
     
-            const API_URL = "https://rfsmart-back-end.onrender.com/me";
+            const API_URL = "http://localhost:3000/me";
             const token = localStorage.getItem("token");
     
             if (token) {
@@ -425,13 +425,13 @@
                     });
             } else {
                 alert("Você precisa estar logado!");
-                window.location.href = "/login.html";
+                window.location.href = "/index.html";
             }
         });
     
         function exit() {
             localStorage.removeItem("token");
-            window.location.href = "/login.html";
+            window.location.href = "/index.html";
         }
     </script>
     </body>
