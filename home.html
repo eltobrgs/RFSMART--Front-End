@@ -9,6 +9,220 @@
     <script src="js/sidebar.js" defer></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+        }
+
+        .home-section {
+            padding: 2rem;
+        }
+
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: #fff;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            padding: 12px 25px;
+            border-radius: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            font-size: 14px;
+            color: #2e7d32;
+            box-shadow: 0 2px 10px rgba(46, 125, 50, 0.1);
+        }
+
+        .balance-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .balance-card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .balance-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .balance-card h3 {
+            color: #666;
+            font-size: 16px;
+            margin: 0 0 15px 0;
+        }
+
+        .balance-card p {
+            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 600;
+            margin: 0 0 20px 0;
+        }
+
+        .balance-card a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #009688;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .balance-card a:hover {
+            background: #00796b;
+            transform: translateY(-2px);
+        }
+
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .chart-container {
+            background: #fff;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            height: 400px;
+            position: relative;
+        }
+
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .chart-container h3 {
+            color: #2c3e50;
+            font-size: 18px;
+            margin: 0 0 20px 0;
+        }
+
+        .sales-section {
+            background: #fff;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .sales-section h2 {
+            color: #2c3e50;
+            font-size: 20px;
+            margin: 0 0 20px 0;
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .filters button {
+            padding: 10px 20px;
+            border: none;
+            background: #f5f6fa;
+            color: #666;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .filters button.active {
+            background: #009688;
+            color: #fff;
+        }
+
+        .filters button:hover:not(.active) {
+            background: #e0e0e0;
+        }
+
+        .sales-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .sales-card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+        }
+
+        .sales-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .sales-card h3 {
+            color: #666;
+            font-size: 14px;
+            margin: 0 0 10px 0;
+        }
+
+        .sales-card p {
+            color: #2c3e50;
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .home-section {
+                padding: 1rem;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+
+            .sales-overview {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -93,38 +307,43 @@
     <section class="home-section">
         <div class="dashboard">
             <div class="header">
-                <h1>Olá, user <span>💚</span></h1>
+                <h1>Olá, <span id="userName">user</span> <span>💚</span></h1>
                 <div class="progress">
-                    <span>Starter</span>
-                    <span>Próxima conquista: R$ 10k</span>
+                    <i class='bx bx-trophy'></i>
+                    <div>
+                        <span>Starter</span>
+                        <span>•</span>
+                        <span>Próxima conquista: R$ 10k</span>
+                    </div>
                 </div>
             </div>
 
             <div class="balance-section">
                 <div class="balance-card">
-                    <h3>Saldo disponível</h3>
+                    <h3><i class='bx bx-wallet'></i> Saldo disponível</h3>
                     <p>R$ 0,00</p>
-                    <a href="#">Sacar</a>
+                    <a href="#"><i class='bx bx-money'></i> Sacar</a>
                 </div>
                 <div class="balance-card">
-                    <h3>Lançamentos futuros</h3>
+                    <h3><i class='bx bx-time'></i> Lançamentos futuros</h3>
                     <p>R$ 0,00</p>
-                    <a href="#">Antecipar</a>
+                    <a href="#"><i class='bx bx-transfer'></i> Antecipar</a>
                 </div>
             </div>
+
             <div class="charts-section">
                 <div class="chart-container">
-                    <h3>Gráfico de Vendas Mensais</h3>
-                    <canvas id="salesChart"></canvas>
+                    <h3><i class='bx bx-line-chart'></i> Gráfico de Vendas Mensais</h3>
+                    <canvas id="salesChart" width="400" height="300"></canvas>
                 </div>
                 <div class="chart-container">
-                    <h3>Receitas por Categoria</h3>
-                    <canvas id="revenueChart"></canvas>
+                    <h3><i class='bx bx-pie-chart'></i> Receitas por Categoria</h3>
+                    <canvas id="revenueChart" width="400" height="300"></canvas>
                 </div>
             </div>
 
             <div class="sales-section">
-                <h2>Minhas vendas</h2>
+                <h2><i class='bx bx-shopping-bag'></i> Minhas vendas</h2>
                 <div class="filters">
                     <button class="active">Últimos 7 dias</button>
                     <button>Últimos 30 dias</button>
@@ -132,27 +351,27 @@
                 </div>
                 <div class="sales-overview">
                     <div class="sales-card">
-                        <h3>Total em comissões</h3>
+                        <h3><i class='bx bx-dollar'></i> Total em comissões</h3>
                         <p>R$ 0,00</p>
                     </div>
                     <div class="sales-card">
-                        <h3>Novas vendas</h3>
+                        <h3><i class='bx bx-cart-add'></i> Novas vendas</h3>
                         <p>R$ 0,00</p>
                     </div>
                     <div class="sales-card">
-                        <h3>Renovações</h3>
+                        <h3><i class='bx bx-refresh'></i> Renovações</h3>
                         <p>R$ 0,00</p>
                     </div>
                     <div class="sales-card">
-                        <h3>Vendas por cartão</h3>
+                        <h3><i class='bx bx-credit-card'></i> Vendas por cartão</h3>
                         <p>0%</p>
                     </div>
                     <div class="sales-card">
-                        <h3>Vendas por Pix</h3>
+                        <h3><i class='bx bx-qr'></i> Vendas por Pix</h3>
                         <p>0%</p>
                     </div>
                     <div class="sales-card">
-                        <h3>Reembolsos</h3>
+                        <h3><i class='bx bx-revision'></i> Reembolsos</h3>
                         <p>0%</p>
                     </div>
                 </div>
@@ -206,45 +425,104 @@
           window.location.href = "/index.html";
         }
     
-        // Configurações dos gráficos (exemplo com Chart.js)
-        const salesCtx = document.getElementById('salesChart').getContext('2d');
-        const salesChart = new Chart(salesCtx, {
-          type: 'line',
-          data: {
-            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            datasets: [{
-              label: 'Vendas (R$)',
-              data: [1200, 1900, 3000, 5000, 2500, 4000, 3200, 4500, 5000, 5500, 6000, 7000],
-              borderColor: '#007bff',
-              backgroundColor: 'rgba(0, 123, 255, 0.2)',
-              fill: true
-            }]
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: { display: true }
-            }
-          }
+        // Função para inicializar os gráficos
+        function initializeCharts() {
+            // Gráfico de vendas
+            const salesCtx = document.getElementById('salesChart').getContext('2d');
+            const salesChart = new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    datasets: [{
+                        label: 'Vendas (R$)',
+                        data: [1200, 1900, 3000, 5000, 2500, 4000, 3200, 4500, 5000, 5500, 6000, 7000],
+                        borderColor: '#009688',
+                        backgroundColor: 'rgba(0, 150, 136, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: true },
+                        tooltip: {
+                            backgroundColor: '#fff',
+                            titleColor: '#2c3e50',
+                            bodyColor: '#2c3e50',
+                            borderColor: '#ddd',
+                            borderWidth: 1,
+                            padding: 15,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return 'R$ ' + context.parsed.y.toFixed(2);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#f0f0f0'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de receitas
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            const revenueChart = new Chart(revenueCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Eletrônicos', 'Roupas', 'Alimentos', 'Outros'],
+                    datasets: [{
+                        label: 'Receitas',
+                        data: [3000, 2000, 1500, 500],
+                        backgroundColor: [
+                            'rgba(0, 150, 136, 0.8)',
+                            'rgba(255, 193, 7, 0.8)',
+                            'rgba(40, 167, 69, 0.8)',
+                            'rgba(23, 162, 184, 0.8)'
+                        ],
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Inicializa os gráficos após o DOM estar carregado
+        document.addEventListener("DOMContentLoaded", () => {
+            // ... código existente de verificação do usuário ...
+
+            // Inicializa os gráficos
+            initializeCharts();
         });
-    
-        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-        const revenueChart = new Chart(revenueCtx, {
-          type: 'doughnut',
-          data: {
-            labels: ['Eletrônicos', 'Roupas', 'Alimentos', 'Outros'],
-            datasets: [{
-              label: 'Receitas',
-              data: [3000, 2000, 1500, 500],
-              backgroundColor: ['#007bff', '#ffc107', '#28a745', '#17a2b8']
-            }]
-          },
-          options: {
-            responsive: true,
-            plugins: { legend: { position: 'top' } }
-          }
-        });
-      </script>
+    </script>
 
 
 </body>

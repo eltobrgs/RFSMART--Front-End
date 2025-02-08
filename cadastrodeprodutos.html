@@ -10,75 +10,127 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      background-color: #f9f9f9;
+      min-height: 100vh;
+      background-color: #f5f6fa;
     }
     .new-productcontainer {
-      width: 80%;
-      max-width: 800px;
+      width: 85%;
+      max-width: 900px;
       background-color: #fff;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      margin-top: 10%;
-      margin-left: 10%;
+      padding: 30px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      margin-top: 5%;
+      margin-left: 8%;
+      transition: all 0.3s ease;
     }
-    h1 {
-      font-size: 24px;
-      color: #333;
-    }
-    p {
-      font-size: 14px;
-      color: #888;
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 20px;
+    }
+    .progress {
+      background: #e8f5e9;
+      padding: 8px 15px;
+      border-radius: 20px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      font-size: 14px;
+      color: #2e7d32;
     }
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+      position: relative;
     }
     .form-group label {
       display: block;
-      font-size: 14px;
-      color: #333;
-      margin-bottom: 5px;
+      font-size: 15px;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      font-weight: 500;
     }
     .form-group input,
     .form-group select,
     .form-group textarea {
       width: 100%;
-      padding: 10px;
+      padding: 12px 15px;
       font-size: 14px;
-      color: #888;
-      border: 1px solid #ddd;
-      border-radius: 4px;
+      color: #34495e;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      background-color: #fff;
     }
-    .form-group input::placeholder,
-    .form-group textarea::placeholder {
-      color: #bbb;
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #009688;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.1);
     }
-    .form-group select {
-      appearance: none;
-      background: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="%23999" d="M2 0L0 2h4zm0 5L0 3h4z"/></svg>') no-repeat right 10px center;
-      background-size: 8px 10px;
+    .file-input-container {
+      position: relative;
+      padding: 20px;
+      border: 2px dashed #009688;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .file-input-container:hover {
+      background-color: #e8f5e9;
+    }
+    .file-input-container i {
+      font-size: 24px;
+      color: #009688;
+      margin-bottom: 10px;
     }
     .btn {
       display: inline-block;
-      padding: 10px 20px;
-      font-size: 14px;
+      padding: 12px 25px;
+      font-size: 15px;
+      font-weight: 500;
       color: #fff;
       background-color: #009688;
       border: none;
-      border-radius: 4px;
+      border-radius: 8px;
       cursor: pointer;
-      text-align: center;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     .btn:hover {
       background-color: #00796b;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+    .loading::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #fff;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: loading 0.8s linear infinite;
+    }
+    @keyframes loading {
+      to {
+        transform: rotate(360deg);
+      }
     }
     @media (max-width: 600px) {
       .new-productcontainer {
@@ -201,7 +253,12 @@
         </div>
         <div class="form-group">
           <label for="product-image">Imagem do Produto</label>
-          <input type="file" id="product-image" accept="image/*">
+          <div class="file-input-container" id="image-drop-zone">
+            <i class='bx bx-image-add'></i>
+            <p>Arraste uma imagem ou clique para selecionar</p>
+            <input type="file" id="product-image" accept="image/*" style="display: none;">
+            <div id="image-preview"></div>
+          </div>
         </div>
         <div class="form-group">
           <label for="product-video">Vídeo do Produto</label>
@@ -222,7 +279,7 @@
       const token = localStorage.getItem("token");
       if (!token) {
         alert("Você precisa estar logado!");
-        window.location.href = "/login.html";
+        window.location.href = "/index.html";
         return;
       }
       try {
@@ -248,7 +305,7 @@
     // Função para sair
     function exit() {
       localStorage.removeItem("token");
-      window.location.href = "/login.html";
+      window.location.href = "/index.html";
     }
 
     // Função para salvar arquivos (simulação: armazenamento local)
@@ -263,14 +320,74 @@
       }
     }
 
+    // Adiciona preview de imagem e drag and drop
+    const imageDropZone = document.getElementById('image-drop-zone');
+    const imageInput = document.getElementById('product-image');
+    const imagePreview = document.getElementById('image-preview');
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        imageDropZone.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        imageDropZone.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        imageDropZone.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight(e) {
+        imageDropZone.classList.add('highlight');
+    }
+
+    function unhighlight(e) {
+        imageDropZone.classList.remove('highlight');
+    }
+
+    imageDropZone.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handleFiles(files);
+    }
+
+    function handleFiles(files) {
+        if (files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; max-height: 200px; margin-top: 10px;">`;
+            }
+            reader.readAsDataURL(files[0]);
+        }
+    }
+
+    imageDropZone.addEventListener('click', () => imageInput.click());
+    
+    imageInput.addEventListener('change', function() {
+        handleFiles(this.files);
+    });
+
     // Função para enviar o cadastro de produto utilizando async/await
-    document.getElementById('submit-product').addEventListener('click', async () => {
+    document.getElementById('submit-product').addEventListener('click', async (e) => {
+      const button = e.target;
+      button.classList.add('loading');
+      button.textContent = 'Processando...';
+      
       const productName = document.getElementById('product-name').value.trim();
       const category = document.getElementById('category').value;
       const description = document.getElementById('product-description').value.trim();
 
       if (!productName || !category || !description) {
         alert("Preencha todos os campos obrigatórios!");
+        button.classList.remove('loading');
+        button.textContent = 'CONTINUAR';
         return;
       }
 
@@ -278,6 +395,8 @@
       if (!token) {
         alert("Você precisa estar logado!");
         window.location.href = "/login.html";
+        button.classList.remove('loading');
+        button.textContent = 'CONTINUAR';
         return;
       }
 
@@ -313,6 +432,9 @@
       } catch (error) {
         console.error("Erro:", error);
         alert(error.message);
+      } finally {
+        button.classList.remove('loading');
+        button.textContent = 'CONTINUAR';
       }
     });
   </script>

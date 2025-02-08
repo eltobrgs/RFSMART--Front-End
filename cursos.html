@@ -11,42 +11,182 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
-          font-family: Arial, sans-serif;
-          background-color: #f9f9f9;
+          font-family: 'Poppins', sans-serif;
+          background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
           margin: 0;
           padding: 20px;
         }
-        h1 {
-          text-align: center;
-          color: #333;
+
+        .home-section {
+          padding: 2rem;
         }
+
+        .page-header {
+          text-align: center;
+          margin-bottom: 3rem;
+          position: relative;
+        }
+
+        .page-header h1 {
+          font-size: 2.5rem;
+          color: #2c3e50;
+          margin-bottom: 1rem;
+          font-weight: 600;
+        }
+
+        .page-header p {
+          color: #666;
+          font-size: 1.1rem;
+          max-width: 600px;
+          margin: 0 auto;
+        }
+
         .courses-container {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 20px;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 25px;
           margin-top: 20px;
+          padding: 0 20px;
         }
+
         .category-section {
           background: #fff;
-          border-radius: 8px;
-          box-shadow: 0 0 10px rgba(0,0,0,0.1);
-          padding: 15px;
+          border-radius: 16px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+          padding: 25px;
+          margin-bottom: 25px;
+          transition: all 0.3s ease;
+          border: 1px solid rgba(0, 0, 0, 0.05);
         }
+
+        .category-section:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 20px;
+          padding-bottom: 15px;
+          border-bottom: 2px solid #f0f2f5;
+        }
+
+        .category-header i {
+          font-size: 24px;
+          color: #009688;
+        }
+
         .category-section h2 {
-          margin-top: 0;
-          color: #007bff;
-          border-bottom: 2px solid #007bff;
-          padding-bottom: 5px;
+          color: #2c3e50;
+          font-size: 1.5rem;
+          margin: 0;
+          font-weight: 600;
         }
+
         .course {
-          margin-bottom: 10px;
-          padding: 10px;
-          border-bottom: 1px solid #eee;
+          background: #f8fafc;
+          margin-bottom: 15px;
+          padding: 20px;
+          border-radius: 12px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border: 1px solid transparent;
+          position: relative;
+          overflow: hidden;
         }
-        .course:last-child {
-          border-bottom: none;
+
+        .course:hover {
+          background-color: #fff;
+          transform: translateY(-3px);
+          border-color: #009688;
+          box-shadow: 0 5px 15px rgba(0, 150, 136, 0.1);
         }
-      </style>
+
+        .course::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 4px;
+          height: 100%;
+          background: #009688;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .course:hover::after {
+          opacity: 1;
+        }
+
+        .course strong {
+          display: block;
+          color: #2c3e50;
+          font-size: 1.1rem;
+          margin-bottom: 8px;
+          font-weight: 600;
+        }
+
+        .course-description {
+          color: #666;
+          font-size: 0.95rem;
+          line-height: 1.5;
+        }
+
+        .course-meta {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          margin-top: 12px;
+          padding-top: 12px;
+          border-top: 1px solid rgba(0, 0, 0, 0.05);
+          font-size: 0.9rem;
+          color: #666;
+        }
+
+        .course-meta span {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+        }
+
+        .course-meta i {
+          font-size: 1.1rem;
+          color: #009688;
+        }
+
+        .empty-state {
+          text-align: center;
+          padding: 40px;
+          color: #666;
+        }
+
+        .empty-state i {
+          font-size: 48px;
+          color: #009688;
+          margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+          .home-section {
+            padding: 1rem;
+          }
+
+          .courses-container {
+            grid-template-columns: 1fr;
+            padding: 0;
+          }
+
+          .page-header h1 {
+            font-size: 2rem;
+          }
+
+          .category-section {
+            padding: 20px;
+          }
+        }
+    </style>
 </head>
 
 <body>
@@ -129,9 +269,12 @@
         </ul>
     </div>
     <section class="home-section">
-        <h1>Catálogo de Cursos</h1>
+        <div class="page-header">
+            <h1>Catálogo de Cursos</h1>
+            <p>Explore nossa seleção de cursos organizados por categoria</p>
+        </div>
         <div id="coursesContainer" class="courses-container">
-          <!-- As listas por categoria serão geradas aqui -->
+          <!-- O conteúdo será gerado dinamicamente -->
         </div>
     </section>
 
@@ -198,19 +341,60 @@
         function renderCourses(coursesByCategory) {
           const container = document.getElementById('coursesContainer');
           container.innerHTML = '';
+          
+          if (Object.keys(coursesByCategory).length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class='bx bx-book-reader'></i>
+                    <h3>Nenhum curso encontrado</h3>
+                    <p>Não há cursos disponíveis no momento.</p>
+                </div>
+            `;
+            return;
+          }
+
+          // Ícones para cada categoria
+          const categoryIcons = {
+            'Marketing Digital': 'bx-trending-up',
+            'Finanças': 'bx-money',
+            'Desenvolvimento Pessoal': 'bx-user-plus',
+            'Relacionamentos': 'bx-heart',
+            'Produtividade': 'bx-time-five',
+            'Outros': 'bx-category'
+          };
+
           for (const category in coursesByCategory) {
             const section = document.createElement('div');
             section.className = 'category-section';
-            const title = document.createElement('h2');
-            title.textContent = category;
-            section.appendChild(title);
-    
+            
+            const icon = categoryIcons[category] || 'bx-category';
+            
+            section.innerHTML = `
+                <div class="category-header">
+                    <i class='bx ${icon}'></i>
+                    <h2>${category}</h2>
+                </div>
+            `;
+
             coursesByCategory[category].forEach(course => {
-              const courseDiv = document.createElement('div');
-              courseDiv.className = 'course';
-              courseDiv.innerHTML = `<strong>${course.name}</strong><br>${course.description}`;
-              section.appendChild(courseDiv);
+              const courseElement = document.createElement('div');
+              courseElement.className = 'course';
+              courseElement.innerHTML = `
+                <strong>${course.name}</strong>
+                <div class="course-description">${course.description}</div>
+                <div class="course-meta">
+                    <span><i class='bx bx-time'></i>8 horas</span>
+                    <span><i class='bx bx-book-open'></i>10 aulas</span>
+                </div>
+              `;
+              
+              courseElement.addEventListener('click', () => {
+                window.location.href = `product-view.html?id=${course.id}`;
+              });
+
+              section.appendChild(courseElement);
             });
+            
             container.appendChild(section);
           }
         }
