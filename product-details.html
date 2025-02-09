@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -195,6 +195,22 @@
                 padding: 20px;
             }
         }
+
+        .btn-primary {
+            background-color: #009688;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .btn-primary:hover {
+            background-color: #00796b;
+        }
     </style>
 </head>
 
@@ -230,6 +246,17 @@
                     <div id="product-image" class="product-image"></div>
                     <div id="product-video" class="video-container"></div>
                 </div>
+            </div>
+
+            <div class="product-section">
+                <div class="section-title">
+                    <i class='bx bx-book-content'></i>
+                    Módulos e Aulas
+                </div>
+                <div id="modules-container">
+                    <!-- Módulos serão carregados aqui -->
+                </div>
+                <div id="edit-course-button"></div>
             </div>
 
             <div class="download-section">
@@ -289,6 +316,34 @@
                 productNameElement.textContent = product.name;
                 productCategoryElement.textContent = product.category;
                 productDescriptionElement.textContent = product.description;
+
+                // Adicionar botão de edição de módulos
+                const editButton = document.getElementById('edit-course-button');
+                editButton.innerHTML = `
+                    <a href="edit-course.html?id=${productId}" class="btn btn-primary">
+                        <i class='bx bx-edit'></i>
+                        Gerenciar Módulos e Aulas
+                    </a>
+                `;
+
+                // Carregar módulos se existirem
+                if (product.modules && product.modules.length > 0) {
+                    const modulesContainer = document.getElementById('modules-container');
+                    modulesContainer.innerHTML = product.modules.map(module => `
+                        <div class="module-item">
+                            <h3>${module.name}</h3>
+                            <p>${module.description || ''}</p>
+                            <div class="lessons-list">
+                                ${module.lessons.map(lesson => `
+                                    <div class="lesson-item">
+                                        <i class='bx bx-play-circle'></i>
+                                        <span>${lesson.name}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('');
+                }
 
                 // Carregar mídia do localStorage (mantendo a funcionalidade existente)
                 const image = localStorage.getItem(`${productId}_image`);
