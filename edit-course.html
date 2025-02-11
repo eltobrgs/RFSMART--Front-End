@@ -456,7 +456,7 @@
         async function loadCourseDetails() {
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch(`http://localhost:3000/product/${courseId}`, {
+                const response = await fetch(`https://rfsmart-back-end.onrender.com/product/${courseId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -487,7 +487,7 @@
 
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch(`http://localhost:3000/produtos/${courseId}/modules`, {
+                const response = await fetch(`https://rfsmart-back-end.onrender.com/produtos/${courseId}/modules`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -565,7 +565,7 @@
 
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch(`http://localhost:3000/modules/${moduleId}/lessons`, {
+                const response = await fetch(`https://rfsmart-back-end.onrender.com/modules/${moduleId}/lessons`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -628,7 +628,7 @@
         async function loadUsers() {
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch('http://localhost:3000/usuarios', {
+                const response = await fetch('https://rfsmart-back-end.onrender.com/usuarios', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -670,12 +670,12 @@
                 // Buscar módulos do curso
                 const token = localStorage.getItem('token');
                 const [courseResponse, accessResponse] = await Promise.all([
-                    fetch(`http://localhost:3000/product/${courseId}`, {
+                    fetch(`https://rfsmart-back-end.onrender.com/product/${courseId}`, {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
                     }),
-                    fetch(`http://localhost:3000/produtos/${courseId}/module-access/${userId}`, {
+                    fetch(`https://rfsmart-back-end.onrender.com/produtos/${courseId}/module-access/${userId}`, {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
@@ -716,7 +716,7 @@
                     .filter(cb => cb.checked)
                     .map(cb => cb.value);
 
-                await fetch(`http://localhost:3000/produtos/${courseId}/module-access`, {
+                await fetch(`https://rfsmart-back-end.onrender.com/produtos/${courseId}/module-access`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -755,7 +755,7 @@
         document.getElementById('deleteCourse').addEventListener('click', async () => {
             if (confirm('Tem certeza que deseja deletar este curso? Esta ação não pode ser desfeita.')) {
                 const token = localStorage.getItem('token');
-                const response = await fetch(`http://localhost:3000/produtos/${courseId}`, {
+                const response = await fetch(`https://rfsmart-back-end.onrender.com/produtos/${courseId}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`,

@@ -46,7 +46,10 @@
             margin-bottom: 20px;
             background: linear-gradient(45deg, #009688, #4CAF50);
             -webkit-background-clip: text;
+            -moz-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
+            color: #009688; /* fallback para navegadores que não suportam gradiente */
             font-weight: 700;
         }
 
@@ -545,7 +548,7 @@
             }
 
             try {
-                const response = await fetch("http://localhost:3000/me", {
+                const response = await fetch("https://rfsmart-back-end.onrender.com/me", {
                     method: "GET",
                     headers: {
                         "Authorization": `Bearer ${token}`,
@@ -577,7 +580,7 @@
                 }
                 console.log("Token encontrado");
 
-                const response = await fetch('http://localhost:3000/cursos', {
+                const response = await fetch('https://rfsmart-back-end.onrender.com/cursos', {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -682,7 +685,7 @@
                             <div class="category-section">
                                 <div class="courses-row">
                                     ${courses.map(course => `
-                                        <div class="course-card locked">
+                                        <div class="course-card locked" onclick="requestAccess('${course.id}', '${course.whatsapp || ''}')">
                                             <span class="access-badge unavailable">
                                                 <i class='bx bx-lock-alt'></i> Bloqueado
                                             </span>
@@ -736,14 +739,12 @@
 
         function requestAccess(courseId, whatsapp) {
             if (!whatsapp) {
-                showModal('Erro', 'O vendedor não disponibilizou um link de contato.');
+                showModal('Acesso Indisponível', 'O vendedor não disponibilizou um link de contato para este curso.');
                 return;
             }
             
-            if (confirm('Você não tem acesso a esse curso. Deseja solicitar acesso?')) {
-                // Exibe o modal com o link do WhatsApp
-                showModal('Solicitar Acesso', `Para solicitar acesso, clique no link abaixo:<br><a href="${whatsapp}" target="_blank">${whatsapp}</a>`);
-            }
+            const whatsappLink = whatsapp.startsWith('http') ? whatsapp : `https://wa.me/${whatsapp}`;
+            showModal('Solicitar Acesso', `Para solicitar acesso a este curso, entre em contato através do link:<br><br><a href="${whatsappLink}" target="_blank" style="background-color: #25D366; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;"><i class='bx bxl-whatsapp' style="vertical-align: middle;"></i> Abrir WhatsApp</a>`);
         }
 
         function showModal(title, message) {

@@ -525,7 +525,7 @@
         function loadProducts() {
             const productListElement = document.getElementById('product-list');
             const token = localStorage.getItem("token");
-            const API_URL = "http://localhost:3000/produtos";
+            const API_URL = "https://rfsmart-back-end.onrender.com/produtos";
 
             fetch(API_URL, {
                 method: "GET",
@@ -596,7 +596,7 @@
             const UserNameElementSidebar = document.querySelector(".name");
             const logOutButton = document.getElementById("log_out");
     
-            const API_URL = "http://localhost:3000/me";
+            const API_URL = "https://rfsmart-back-end.onrender.com/me";
             const token = localStorage.getItem("token");
     
             if (token) {
